@@ -3,6 +3,7 @@
 # In[93]:
 from __future__ import annotations
 
+import json
 import os
 import random
 
@@ -47,7 +48,7 @@ def seed_torch(seed=42):
 seed_torch(seed=0)
 
 # Load config details from JSON file
-with open('config.json', 'r') as f:
+with open('config.json') as f:
     config = json.load(f)
 
 onnx_model = config['onnx_model']
@@ -66,8 +67,6 @@ sig_arr = ak.from_parquet(sig_arr_path)
 # Load pNN model converted to onnx
 onnx_net = onnx.load(onnx_model)
 
-# Load feature and context scalers
-feature_scaler, context_scaler = load_scalers(root_path, names=(feature_scaler_path, context_scaler_path))
 
 mxms = (
     np.unique(sig_arr[['m_x', 'm_s']])
@@ -170,8 +169,9 @@ with torch.no_grad():
         )
 
 
-
-feature_scaler, context_scaler = load(feature_scaler_path), load(context_scaler_path)
+feature_scaler, context_scaler = load(
+    feature_scaler_path,
+), load(context_scaler_path)
 
 
 flow_samples = np.array([

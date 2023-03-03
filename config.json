@@ -1,0 +1,21 @@
+{
+    "data_path": "/eos/user/h/hhsukth/GroupSpace/Ntuples",
+    "outdir": "",
+    "pre": "(m_yy > 105) & (m_yy < 160) & (cutFlow == 7)",
+    "onnx_model": "/eos/user/n/nsimpson/onnx_model.onnx",
+    "sig_arr_path": "/eos/user/n/nsimpson/signals-pnn.parquet",
+    "root_path": "/home/jovyan/flow-interpolation-new",
+    "holdout_points": [
+        [210, 70],
+        [245, 90],
+        [190, 50],
+        [300, 110],
+        [500, 170],
+        [750, 400]
+    ],
+    "num_layers": 8,
+    "hidden_features": 16,
+    "feature_scaler_path": "reco_scaler_large-all.bin",
+    "context_scaler_path": "truth_scaler_large-all.bin",
+    "num_samples": 10000
+}
