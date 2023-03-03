@@ -1,0 +1,7 @@
+awkward==1.8.0
+onnx==1.13.0
+onnx2pytorch==0.4.1
+plothelp==0.2
+scikit-learn==1.0.2
+torch
+uproot==4.3.5

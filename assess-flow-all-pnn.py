@@ -46,14 +46,28 @@ def seed_torch(seed=42):
 
 seed_torch(seed=0)
 
-# use pNN model that was converted to onnx
-onnx_model = '/eos/user/n/nsimpson/onnx_model.onnx'
+# Load config details from JSON file
+with open('config.json', 'r') as f:
+    config = json.load(f)
 
-# import signal MC with preselection
-sig_arr = ak.from_parquet('/eos/user/n/nsimpson/signals-pnn.parquet')
+onnx_model = config['onnx_model']
+sig_arr_path = config['sig_arr_path']
+root_path = config['root_path']
+holdout_points = config['holdout_points']
+num_layers = config['num_layers']
+hidden_features = config['hidden_features']
+feature_scaler_path = config['feature_scaler_path']
+context_scaler_path = config['context_scaler_path']
+num_samples = config['num_samples']
 
-# folder with the flows inside
-root_path = '/home/jovyan/flow-interpolation-new'
+# Import signal MC with preselection
+sig_arr = ak.from_parquet(sig_arr_path)
+
+# Load pNN model converted to onnx
+onnx_net = onnx.load(onnx_model)
+
+# Load feature and context scalers
+feature_scaler, context_scaler = load_scalers(root_path, names=(feature_scaler_path, context_scaler_path))
 
 mxms = (
     np.unique(sig_arr[['m_x', 'm_s']])
@@ -156,20 +170,9 @@ with torch.no_grad():
         )
 
 
-# In[97]:
 
+feature_scaler, context_scaler = load(feature_scaler_path), load(context_scaler_path)
 
-def load_scalers(path, names=('reco_scaler_large-all.bin', 'truth_scaler_large-all.bin')):
-    return load(os.path.join(path, names[0])), load(os.path.join(path, names[1]))
-
-
-feature_scaler, context_scaler = load_scalers(root_path)
-
-
-# In[98]:
-
-
-num_samples = 10000
 
 flow_samples = np.array([
     sample._sample_flow(
