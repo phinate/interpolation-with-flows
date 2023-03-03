@@ -22,7 +22,6 @@ from nflows.transforms.autoregressive import (
 from nflows.transforms.base import CompositeTransform
 from nflows.transforms.permutations import ReversePermutation
 from onnx2pytorch import ConvertModel
-from scipy.stats import chisquare
 from sklearn.preprocessing import StandardScaler
 from torch import nn
 
@@ -251,8 +250,7 @@ flow_hists, flow_errs = np.mean(fhs, axis=0), np.std(fhs, axis=0)
 
 def plot_hist(dct):
     ax, (data, flow, errs), i = dct['ax'], dct['data'], dct['i']
-#     print(data[0], flow)
-    chi2 = chisquare(data[0], f_exp=flow)
+    # chi2 = chisquare(data[0], f_exp=flow)
     ax.stairs(data[0], data[1], fill=True, label='signal MC', alpha=0.6)
     ax.stairs(flow, data[1], label='flow avg')
     ax.stairs(

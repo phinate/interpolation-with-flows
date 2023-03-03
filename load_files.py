@@ -12,7 +12,7 @@ import uproot
 
 # In[3]:
 
-
+outdir = ''
 data_path = '/eos/user/h/hhsukth/GroupSpace/Ntuples'
 paths = glob(os.path.join(data_path, 'X*.root'))
 
