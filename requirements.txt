@@ -5,3 +5,4 @@ plothelp==0.2
 scikit-learn==1.0.2
 torch
 uproot==4.3.5
+pyarrow

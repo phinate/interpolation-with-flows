@@ -52,9 +52,9 @@ with open('config.json') as f:
     config = json.load(f)
 
 onnx_model = config['onnx_model']
-sig_arr_path = config['sig_arr_path']
-root_path = config['root_path']
-holdout_points = config['holdout_points']
+sig_arr_path = os.join(config['sig_arr_folder'], 'signals-pnn.parquet')
+root_path = config['path_to_flows']
+points_to_infer = config["points_to_infer"]
 num_layers = config['num_layers']
 hidden_features = config['hidden_features']
 feature_scaler_path = config['feature_scaler_path']
@@ -80,14 +80,14 @@ mxms = mxms[mxms[:, 1] > 15]
 # sectioned_data = [sig_arr[(sig_arr.m_x == pair[0]) * (sig_arr.m_s == pair[1])] for pair in mxms]
 
 
-non_test_points = [a for a in mxms.tolist() if a not in holdout_points]
+non_test_points = [a for a in mxms.tolist() if a not in points_to_infer]
 non_test_data = [
     sig_arr[(sig_arr.m_x == pair[0]) *
             (sig_arr.m_s == pair[1])] for pair in non_test_points
 ]
 test_data = [
     sig_arr[(sig_arr.m_x == pair[0]) * (sig_arr.m_s == pair[1])]
-    for pair in holdout_points
+    for pair in points_to_infer
 ]
 
 
@@ -143,22 +143,7 @@ def ak_to_ndarray(arr):
 onnx_net = onnx.load(onnx_model)
 pytorch_model = ConvertModel(onnx_net, experimental=True)
 
-test_data_hists = []
-with torch.no_grad():
-    for array in test_data:
-        array = ak_to_ndarray(
-            array[['m_jj', 'm_bbyy_mod', 'm_x', 'm_s', 'total_weight']],
-        )
-        pnn_output = pytorch_model.forward(
-            torch.tensor(
-                array[:, :-1], dtype=torch.float32,
-            ),
-        ).detach().numpy()
-        test_data_hists.append(
-            np.histogram(
-                pnn_output.ravel(), weights=array[:, -1],
-            ),
-        )
+
 
 
 feature_scaler, context_scaler = load(
@@ -168,7 +153,7 @@ feature_scaler, context_scaler = load(
 
 flow_samples = np.array([
     sample._sample_flow(
-        flow, feature_scaler, context_scaler, holdout_points, num_samples,
+        flow, feature_scaler, context_scaler, points_to_infer, num_samples,
     ) for flow in flows
 ])
 flow_samples.shape  # flows, context, samples, features
@@ -177,22 +162,22 @@ flow_samples.shape  # flows, context, samples, features
 # In[99]:
 
 
-mx, ms = holdout_points[0]
+mx, ms = points_to_infer[0]
 tmp = np.ones((10000, 1))
 mx = tmp*mx
 ms = tmp*ms
 big_arr = np.hstack((mx, ms))
 
-for mx, ms in holdout_points[1:]:
+for mx, ms in points_to_infer[1:]:
     tmp = np.ones((10000, 1))
     mx = tmp*mx
     ms = tmp*ms
     horiz_arr = np.hstack((mx, ms))
     big_arr = np.vstack((big_arr, horiz_arr))
 
-big_holdout_points = np.tile(
+big_points_to_infer = np.tile(
     big_arr.reshape(
-        len(holdout_points), 10000, 2,
+        len(points_to_infer), 10000, 2,
     ), (10, 1, 1, 1),
 )
 
@@ -200,7 +185,7 @@ big_holdout_points = np.tile(
 # In[100]:
 
 
-flow_data = np.concatenate((flow_samples, big_holdout_points), axis=-1)
+flow_data = np.concatenate((flow_samples, big_points_to_infer), axis=-1)
 
 
 # In[101]:
@@ -226,9 +211,24 @@ bins = 10
 def hist_func(x):
     return np.histogram(x, bins=bins)[0]
 
-
+test_data_hists = []
+with torch.no_grad():
+    for array in test_data:
+        array = ak_to_ndarray(
+            array[['m_jj', 'm_bbyy_mod', 'm_x', 'm_s', 'total_weight']],
+        )
+        pnn_output = pytorch_model.forward(
+            torch.tensor(
+                array[:, :-1], dtype=torch.float32,
+            ),
+        ).detach().numpy()
+        test_data_hists.append(
+            np.histogram(
+                pnn_output.ravel(), weights=array[:, -1],
+            ),
+        )
 test_norms = np.array([np.sum(h[0].ravel()) for h in test_data_hists])
-norm_factors = test_norms / 10000
+norm_factors = test_norms / num_samples
 
 # Apply the function along the third axis (axis=2)
 reduced_array = np.apply_along_axis(
@@ -236,12 +236,11 @@ reduced_array = np.apply_along_axis(
 )
 fhs = reduced_array*np.tile(
     norm_factors, (10, 1),
-).reshape(10, len(holdout_points), 1)
+).reshape(10, len(points_to_infer), 1)
 flow_hists, flow_errs = np.mean(fhs, axis=0), np.std(fhs, axis=0)
 
 
 # In[103]:
-
 
 def plot_hist(dct):
     ax, (data, flow, errs), i = dct['ax'], dct['data'], dct['i']
@@ -253,7 +252,7 @@ def plot_hist(dct):
         label=r'flow$\pm$$\sigma_{flow}$', alpha=0.7,
     )
     ax.stairs(flow-errs, data[1], linestyle=':', color='k', alpha=0.7)
-    mx, ms = holdout_points[i]
+    mx, ms = points_to_infer[i]
     ax.set_title(f'$m_X$, $m_S$ = {mx}, {ms}')  # , {chi2[0]/10:.3g}")
 #     ax.set_xlabel("pNN")
     ax.legend(fontsize='6', frameon=False, loc='upper left')

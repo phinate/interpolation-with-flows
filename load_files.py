@@ -16,7 +16,7 @@ with open('config.json', 'r') as f:
     config = json.load(f)
 
 data_path = config['data_path']
-outdir = config['outdir']
+outdir = config['sig_arr_folder']
 pre = config['preselection']
 
 # Find root files to load
