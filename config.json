@@ -1,10 +1,10 @@
 {
     "data_path": "/eos/user/h/hhsukth/GroupSpace/Ntuples",
     "outdir": "",
-    "pre": "(m_yy > 105) & (m_yy < 160) & (cutFlow == 7)",
+    "preselection": "(m_yy > 105) & (m_yy < 160) & (cutFlow == 7)",
     "onnx_model": "/eos/user/n/nsimpson/onnx_model.onnx",
     "sig_arr_path": "/eos/user/n/nsimpson/signals-pnn.parquet",
-    "root_path": "/home/jovyan/flow-interpolation-new",
+    "root_path": ".",
     "holdout_points": [
         [210, 70],
         [245, 90],

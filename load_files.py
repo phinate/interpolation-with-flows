@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-# In[2]:
+
 from __future__ import annotations
 
+import json
 import os
 from glob import glob
 
@@ -10,14 +11,18 @@ import numpy as np
 import uproot
 
 
-# In[3]:
+# Load config details from JSON file
+with open('config.json', 'r') as f:
+    config = json.load(f)
 
-outdir = ''
-data_path = '/eos/user/h/hhsukth/GroupSpace/Ntuples'
+data_path = config['data_path']
+outdir = config['outdir']
+pre = config['preselection']
+
+# Find root files to load
 paths = glob(os.path.join(data_path, 'X*.root'))
 
 arrs = []
-pre = '(m_yy > 105) & (m_yy < 160) & (cutFlow == 7)'
 for filename in paths:
     dct = {}
     arr = uproot.open(filename)['CollectionTree;1'].arrays(cut=pre)

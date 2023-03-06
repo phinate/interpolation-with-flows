@@ -79,15 +79,7 @@ mxms = mxms[mxms[:, 1] > 15]
 
 # sectioned_data = [sig_arr[(sig_arr.m_x == pair[0]) * (sig_arr.m_s == pair[1])] for pair in mxms]
 
-holdout_points = [
-    [210, 70],
-    [245,   90],
-    [190,   50],
-    [300, 110],
-    [500, 170],
-    [750, 400],
-]
-holdout_points = mxms[37:60]
+
 non_test_points = [a for a in mxms.tolist() if a not in holdout_points]
 non_test_data = [
     sig_arr[(sig_arr.m_x == pair[0]) *
