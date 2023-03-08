@@ -22,21 +22,21 @@ All scripts use the same config file `config.json`. The important options for ea
 The main thing I've tested is generating flow samples. Here are the important config options for `generate-flow-samples.py`:
 
 ```
-    "onnx_model": Path to the onnx-converted model of the pNN (outputted from convert-to-onnx.py)
-    "path_to_flows": Path to folder containing the trained flow models.
-    "points_to_infer": The desired signal points to generate samples from in the form [mX, mS]. An example:
-    [
-        [210, 70],
-        [245, 90],
-        [190, 50],
-        [300, 110],
-        [500, 170],
-        [750, 400]
-    ],
-    "feature_scaler_path": Path to .bin file containing the scaler for mbbyy* and mbb.
-    "context_scaler_path": Path to .bin file containing the scaler for the truth mass points.
-    "num_samples": How many samples to generate. I've been using 10,000 as a baseline, then normalizing the resulting histograms appropriately.
-    "samples_filename": Name of the root file containing the samples.
+"onnx_model": Path to the onnx-converted model of the pNN (outputted from convert-to-onnx.py)
+"path_to_flows": Path to folder containing the trained flow models.
+"points_to_infer": The desired signal points to generate samples from in the form [mX, mS]. An example:
+[
+    [210, 70],
+    [245, 90],
+    [190, 50],
+    [300, 110],
+    [500, 170],
+    [750, 400]
+],
+"feature_scaler_path": Path to .bin file containing the scaler for mbbyy* and mbb.
+"context_scaler_path": Path to .bin file containing the scaler for the truth mass points.
+"num_samples": How many samples to generate. I've been using 10,000 as a baseline, then normalizing the resulting histograms appropriately.
+"samples_filename": Name of the root file containing the samples.
 ```
 
 Then, just run `python3 generate-flow-samples.py`.
