@@ -39,4 +39,4 @@ The main thing I've tested is generating flow samples. Here are the important co
 "samples_filename": Name of the root file containing the samples.
 ```
 
-Then, just run `python3 generate-flow-samples.py`.
+Then, just run `python3 generate-flow-samples.py`. The result will give you a TTree indexed by each signal point, and will have an array of size [number of flows, number of samples]. You can get the final histograms by averaging the histograms of all 10 flows, and use the standard deviation as a shape systematic.
