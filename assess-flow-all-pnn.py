@@ -8,10 +8,10 @@ import os
 import random
 
 import awkward as ak
-import matplotlib.pyplot as plt
 import numpy as np
 import onnx
 import torch
+import uproot
 from flow_interp import sample
 from joblib import load
 from nflows.distributions.normal import ConditionalDiagonalNormal
@@ -62,6 +62,7 @@ hidden_features = config['hidden_features']
 feature_scaler_path = config['feature_scaler_path']
 context_scaler_path = config['context_scaler_path']
 num_samples = config['num_samples']
+tree_dir = config['samples_filename']
 
 # Import signal MC with preselection
 sig_arr = ak.from_parquet(sig_arr_path)
@@ -189,7 +190,6 @@ big_points_to_infer = np.tile(
 
 flow_data = np.concatenate((flow_samples, big_points_to_infer), axis=-1)
 
-
 # In[101]:
 
 
@@ -198,9 +198,10 @@ with torch.no_grad():
         torch.tensor(
             flow_data, dtype=torch.float32,
         ),
-    ).detach().numpy()
+    ).detach().numpy().squeeze()
 
-print(pnn_flow.shape)
+with uproot.recreate(tree_dir) as file:
+    file["samples"] = {f"X{a[0]}_S{a[1]}":pnn_flow[:, i, :] for i,a in enumerate(points_to_infer)}
 # In[102]:
 
 

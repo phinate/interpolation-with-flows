@@ -24,5 +24,6 @@
     "hidden_features": 16,
     "feature_scaler_path": "flow-weights-all/reco_scaler_large-all.bin",
     "context_scaler_path": "flow-weights-all/truth_scaler_large-all.bin",
-    "num_samples": 10000
+    "num_samples": 10000,
+    "samples_filename": "flow-samples.root"
 }
