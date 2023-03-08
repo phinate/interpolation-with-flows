@@ -1,10 +1,18 @@
 {
     "data_path": "/eos/user/h/hhsukth/GroupSpace/Ntuples",
     "preselection": "(m_yy > 105) & (m_yy < 160) & (cutFlow == 7)",
-    "onnx_model": "/eos/user/n/nsimpson/onnx-model.onnx",
-    "sig_arr_folder": "/eos/user/n/nsimpson/signals-pnn.parquet",
+    "onnx_model": "onnx-model.onnx",
+    "sig_arr_path": "../signals-pnn.parquet",
     "path_to_flows": "flow-weights-all/",
     "holdout_points": [
+        [210, 70],
+        [245, 90],
+        [190, 50],
+        [300, 110],
+        [500, 170],
+        [750, 400]
+    ],
+    "points_to_infer": [
         [210, 70],
         [245, 90],
         [190, 50],
@@ -16,6 +24,5 @@
     "hidden_features": 16,
     "feature_scaler_path": "flow-weights-all/reco_scaler_large-all.bin",
     "context_scaler_path": "flow-weights-all/truth_scaler_large-all.bin",
-    "num_samples": 10000,
-    "points_to_infer": [{"mx": 170, "ms": 30, "sum_of_total_weights": 427.39542393694546}, {"mx": 180, "ms": 50, "sum_of_total_weights": 791.662352068106}, {"mx": 185, "ms": 30, "sum_of_total_weights": 968.6803791409217}, {"mx": 190, "ms": 50, "sum_of_total_weights": 1210.7396904640218}, {"mx": 200, "ms": 70, "sum_of_total_weights": 3147.619738387498}, {"mx": 205, "ms": 30, "sum_of_total_weights": 2200.2975645683273}, {"mx": 205, "ms": 50, "sum_of_total_weights": 1986.7046309148056}, {"mx": 210, "ms": 70, "sum_of_total_weights": 3544.7487304051456}, {"mx": 220, "ms": 90, "sum_of_total_weights": 6906.998812355773}, {"mx": 225, "ms": 30, "sum_of_total_weights": 3782.569615468514}, {"mx": 225, "ms": 50, "sum_of_total_weights": 3468.8805801711887}, {"mx": 225, "ms": 70, "sum_of_total_weights": 4442.115588420959}, {"mx": 230, "ms": 90, "sum_of_total_weights": 6733.078964344842}, {"mx": 230, "ms": 100, "sum_of_total_weights": 8470.284089034638}, {"mx": 240, "ms": 100, "sum_of_total_weights": 8226.477650139597}, {"mx": 240, "ms": 110, "sum_of_total_weights": 9881.181222405196}, {"mx": 245, "ms": 30, "sum_of_total_weights": 5066.703946399968}, {"mx": 245, "ms": 50, "sum_of_total_weights": 5302.824361846897}, {"mx": 245, "ms": 70, "sum_of_total_weights": 5523.486777522842}, {"mx": 245, "ms": 90, "sum_of_total_weights": 7168.52194830268}, {"mx": 250, "ms": 100, "sum_of_total_weights": 8471.384622714937}, {"mx": 250, "ms": 110, "sum_of_total_weights": 9721.219374410852}, {"mx": 300, "ms": 30, "sum_of_total_weights": 6589.909548202411}, {"mx": 300, "ms": 70, "sum_of_total_weights": 9159.927414313192}, {"mx": 300, "ms": 110, "sum_of_total_weights": 11079.444492985473}, {"mx": 300, "ms": 170, "sum_of_total_weights": 15798.387689417295}, {"mx": 400, "ms": 30, "sum_of_total_weights": 3717.1667759924685}, {"mx": 400, "ms": 70, "sum_of_total_weights": 14634.04733162238}, {"mx": 400, "ms": 110, "sum_of_total_weights": 15083.105705806956}, {"mx": 400, "ms": 170, "sum_of_total_weights": 17265.6672624564}, {"mx": 400, "ms": 200, "sum_of_total_weights": 17978.17963867042}, {"mx": 500, "ms": 30, "sum_of_total_weights": 2662.251739213815}, {"mx": 500, "ms": 70, "sum_of_total_weights": 18895.8550501727}, {"mx": 500, "ms": 110, "sum_of_total_weights": 19635.127076087905}, {"mx": 500, "ms": 170, "sum_of_total_weights": 20637.08038205923}, {"mx": 500, "ms": 200, "sum_of_total_weights": 21445.16046041473}, {"mx": 500, "ms": 300, "sum_of_total_weights": 20643.783743417178}, {"mx": 600, "ms": 70, "sum_of_total_weights": 21163.10383235682}, {"mx": 600, "ms": 110, "sum_of_total_weights": 22588.811583821094}, {"mx": 600, "ms": 170, "sum_of_total_weights": 23446.20509951119}, {"mx": 600, "ms": 200, "sum_of_total_weights": 23931.283903785574}, {"mx": 600, "ms": 300, "sum_of_total_weights": 23630.574002737172}, {"mx": 600, "ms": 400, "sum_of_total_weights": 21527.882605563118}, {"mx": 750, "ms": 70, "sum_of_total_weights": 18436.281617118755}, {"mx": 750, "ms": 110, "sum_of_total_weights": 26166.248849005013}, {"mx": 750, "ms": 170, "sum_of_total_weights": 26669.93424398694}, {"mx": 750, "ms": 200, "sum_of_total_weights": 26955.98031907693}, {"mx": 750, "ms": 300, "sum_of_total_weights": 28017.648160954075}, {"mx": 750, "ms": 400, "sum_of_total_weights": 26289.935903089063}, {"mx": 750, "ms": 500, "sum_of_total_weights": 23427.81126867862}, {"mx": 1000, "ms": 70, "sum_of_total_weights": 10884.066303616055}, {"mx": 1000, "ms": 110, "sum_of_total_weights": 27820.528127984635}, {"mx": 1000, "ms": 170, "sum_of_total_weights": 29850.51352780682}, {"mx": 1000, "ms": 200, "sum_of_total_weights": 30448.203363861496}, {"mx": 1000, "ms": 300, "sum_of_total_weights": 31033.9337188892}, {"mx": 1000, "ms": 400, "sum_of_total_weights": 30555.120710175263}, {"mx": 1000, "ms": 500, "sum_of_total_weights": 29080.415800953975}]
+    "num_samples": 10000
 }
