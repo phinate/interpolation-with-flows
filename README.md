@@ -19,7 +19,9 @@ Note: this will install the CPU version of PyTorch, and may take up a good amoun
 
 All scripts use the same config file `config.json`. The important options for each script should be loaded at the start of the script, which should hopefully make clear which ones you need to modify (ask me if unsure).
 
-The main thing I've tested is generating flow samples. Here are the important config options for `generate-flow-samples.py`:
+The main thing I've tested is generating flow samples. To do this with the existing flows, you just need to run `load_files.py` (which needs the path to our current ntuples as the `data_path` field in `config.json`). The output file name and path is controlled by `sig_arr_path`, which is also where the other scripts will look to find the preprocessed signal MC array you just generated. 
+
+After that, you can generate samples! Here are the important config options for `generate-flow-samples.py`:
 
 ```
 "onnx_model": Path to the onnx-converted model of the pNN (outputted from convert-to-onnx.py)
